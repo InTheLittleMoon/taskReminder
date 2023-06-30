@@ -1,0 +1,29 @@
+.individualTask {
+  margin: auto;
+  display: flex;
+  width: 90%;
+  height: 5vh;
+  align-items: center;
+  border-bottom: 0.5px solid rgb(193, 199, 204);
+}
+
+.leftContainer {
+  display: flex;
+  flex-grow: 2;
+}
+
+.leftContainer input {
+  margin-right: 4%;
+}
+
+.dots {
+  height: 3.5vh;
+}
+
+.dots:hover {
+  cursor: pointer;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+  }
