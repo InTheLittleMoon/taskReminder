@@ -9,12 +9,21 @@ import Task from "./components/task/task";
 
 function App() {
   //held states
-  const [taskBarContainer, setTaskBarContainer] = useState(["Survive"]);
+  const [taskBarContainer, setTaskBarContainer] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [activeDiv, setActiveDiv] = useState("All");
 
+  const handleDeleteTask = (taskToDelete) => {
+    setTaskBarContainer((prevTasks) =>
+      prevTasks.filter((task) => task !== taskToDelete)
+    );
+  };
+
   const addTask = () => {
-    setTaskBarContainer((prevTasks) => [...prevTasks, newTask]);
+    setTaskBarContainer((prevTasks) => [
+      ...prevTasks,
+      { task: newTask, completed: false },
+    ]);
     setNewTask("");
   };
 
@@ -26,6 +35,17 @@ function App() {
     setTaskBarContainer([]);
     console.log("All Tasks Cleared");
   };
+
+  const filteredTasks = taskBarContainer.filter((task) => {
+    if (activeDiv === "All") {
+      return true;
+    } else if (activeDiv === "Pending") {
+      return !task.completed;
+    } else if (activeDiv === "Completed") {
+      return task.completed;
+    }
+    return true;
+  });
 
   return (
     <div className="background-color-container">
@@ -87,8 +107,13 @@ function App() {
           </div>
         </div>
         <div className="task-container">
-          {taskBarContainer.map((task, index) => (
-            <Task key={index} task={task} />
+          {filteredTasks.map((task, index) => (
+            <Task
+              key={index}
+              task={task.task}
+              completed={task.completed}
+              deleteTask={() => handleDeleteTask(task)}
+            />
           ))}
         </div>
       </div>

@@ -1,25 +1,55 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./task.css";
 
 //image imports
 import dotsIcon from "../../assets/images/horizontal-dots.png";
+import deleteIcon from "../../assets/images/delete-task-icon.png";
 
-export default function Task({ task }) {
+export default function Task({ task, completed, deleteTask }) {
   //held states
-  const [completed, setCompleted] = useState(false);
+  const [potentialDelete, setPotentialDelete] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(completed);
+
+  //reverts to three dots in case you didnt mean to delete task
+  useEffect(() => {
+    let timerId = null;
+    if (potentialDelete) {
+      timerId = setTimeout(() => {
+        setPotentialDelete(false);
+      }, 3000);
+    }
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [potentialDelete]);
+
+  const handleCheckboxChange = () => {
+    setIsCompleted(!isCompleted);
+  };
 
   return (
     <div className="individualTask">
       <div className="leftContainer">
         <input
           onChange={() => {
-            setCompleted(!completed);
+            handleCheckboxChange();
+            console.log(completed);
           }}
           type="checkbox"
         ></input>
-        <span className={completed ? "strikethrough" : ""}>{task}</span>
+        <span className={isCompleted ? "strikethrough" : ""}>{task}</span>
       </div>
-      <img className="dots" alt="deleteOption" src={dotsIcon} />
+      <img
+        onClick={() => {
+          if (potentialDelete) {
+            deleteTask();
+          }
+          setPotentialDelete(!potentialDelete);
+        }}
+        className="dots"
+        alt="deleteOption"
+        src={potentialDelete ? deleteIcon : dotsIcon}
+      />
     </div>
   );
 }
