@@ -13,10 +13,10 @@ function App() {
   const [newTask, setNewTask] = useState("");
   const [activeDiv, setActiveDiv] = useState("All");
 
-  const updateTask = (index) => {
+  const updateTask = (taskToFind) => {
     setTaskBarContainer((prevTasks) => {
-      let newState = prevTasks.map((task, i) => {
-        if (i === index) {
+      let newState = prevTasks.map((task) => {
+        if (task.task === taskToFind) {
           return { ...task, completed: !task.completed };
         } else {
           return task;
@@ -130,7 +130,7 @@ function App() {
               task={task.task}
               completed={task.completed}
               deleteTask={() => handleDeleteTask(task)}
-              updateTask={() => updateTask(index)}
+              updateTask={() => updateTask(task.task)}
             />
           ))}
         </div>
