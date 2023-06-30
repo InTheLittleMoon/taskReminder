@@ -13,6 +13,20 @@ function App() {
   const [newTask, setNewTask] = useState("");
   const [activeDiv, setActiveDiv] = useState("All");
 
+  const updateTask = (index) => {
+    setTaskBarContainer((prevTasks) => {
+      let newState = prevTasks.map((task, i) => {
+        if (i === index) {
+          return { ...task, completed: !task.completed };
+        } else {
+          return task;
+        }
+      });
+
+      return newState;
+    });
+  };
+
   const handleDeleteTask = (taskToDelete) => {
     setTaskBarContainer((prevTasks) =>
       prevTasks.filter((task) => task !== taskToDelete)
@@ -20,6 +34,9 @@ function App() {
   };
 
   const addTask = () => {
+    if (newTask === "") {
+      return;
+    }
     setTaskBarContainer((prevTasks) => [
       ...prevTasks,
       { task: newTask, completed: false },
@@ -27,7 +44,7 @@ function App() {
     setNewTask("");
   };
 
-  const handleClick = (divName) => {
+  const handleFilterClick = (divName) => {
     setActiveDiv(divName);
   };
 
@@ -79,19 +96,19 @@ function App() {
             <div className="actions">
               <div
                 className={activeDiv === "All" ? "active" : ""}
-                onClick={() => handleClick("All")}
+                onClick={() => handleFilterClick("All")}
               >
                 All
               </div>
               <div
                 className={activeDiv === "Pending" ? "active" : ""}
-                onClick={() => handleClick("Pending")}
+                onClick={() => handleFilterClick("Pending")}
               >
                 Pending
               </div>
               <div
                 className={activeDiv === "Completed" ? "active" : ""}
-                onClick={() => handleClick("Completed")}
+                onClick={() => handleFilterClick("Completed")}
               >
                 Completed
               </div>
@@ -113,6 +130,7 @@ function App() {
               task={task.task}
               completed={task.completed}
               deleteTask={() => handleDeleteTask(task)}
+              updateTask={() => updateTask(index)}
             />
           ))}
         </div>

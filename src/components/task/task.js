@@ -5,7 +5,7 @@ import "./task.css";
 import dotsIcon from "../../assets/images/horizontal-dots.png";
 import deleteIcon from "../../assets/images/delete-task-icon.png";
 
-export default function Task({ task, completed, deleteTask }) {
+export default function Task({ task, completed, deleteTask, updateTask }) {
   //held states
   const [potentialDelete, setPotentialDelete] = useState(false);
   const [isCompleted, setIsCompleted] = useState(completed);
@@ -23,8 +23,10 @@ export default function Task({ task, completed, deleteTask }) {
     };
   }, [potentialDelete]);
 
+  //handles individual tasks' completed status
   const handleCheckboxChange = () => {
     setIsCompleted(!isCompleted);
+    updateTask();
   };
 
   return (
